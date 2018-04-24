@@ -97,3 +97,7 @@ public class ExceptionDemo {
 ```java
 {"bstatus":{"code":2,"desc":"系统异常"}}
 ```
+7.配置文件区分环境
+在src/main/profiles下会有3个目录,dev/beta/product（大部分情况下是这3种环境，如果需要其他的环境可以修改pom.xml），将每种
+环境下配置不同的配置文件放到这个目录下，比如jdbc.properties,dubbo.properties等等，然后在src/main/resources目录下的spring
+配置文件或者代码中取引用这些配置项，maven打包时选择maven package -P ${profile名称，如dev}即可
