@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -32,9 +33,10 @@ public class LogInterceptor{
     @Around("logPointCut()")
     public Object invoke(ProceedingJoinPoint pjp) throws Throwable {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        Map<String,String[]> params = servletRequestAttributes.getRequest().getParameterMap();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        Map<String,String[]> params = request.getParameterMap();
         long startTime = System.currentTimeMillis();
-        logger.info("receive request,params = " + new Gson().toJson(params));
+        logger.info("receive request,url=" + request.getRequestURL() + ",params = " + new Gson().toJson(params));
         Object result = pjp.proceed();
         logger.info("invoke finished,response = " + JsonUtil.toJson(result));
         long now = System.currentTimeMillis();
